@@ -3,6 +3,7 @@
 ## Prerequisites
 
 - Node.js (v20.10.0)
+- npm (10.5.0)
 
 ## Getting Started
 
