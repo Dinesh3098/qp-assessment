@@ -1,6 +1,11 @@
 import { Request, Response } from "express";
 import { HandlerFunction } from "./handler";
-import { addGrocerySvc, getGroceriesSvc, updateGrocerySvc } from "../services/admin.svc";
+import {
+  addGrocerySvc,
+  deleteGrocerySvc,
+  getGroceriesSvc,
+  updateGrocerySvc,
+} from "../services/admin.svc";
 import { logger } from "../utils/logger.util";
 
 export const addGrocery: HandlerFunction = async (
@@ -27,32 +32,44 @@ export const getGroceries: HandlerFunction = async (
   res: Response
 ) => {
   let { page, limit } = req.query;
-  if (!page){
+  if (!page) {
     page = "1";
   }
-  if (!limit){
+  if (!limit) {
     limit = "5";
   }
 
   try {
-    const groceries = await getGroceriesSvc(Number(page),  Number(limit));
+    const groceries = await getGroceriesSvc(Number(page), Number(limit));
     logger.info("Groceries fetched successfully");
-    res.status(200).json({page, limit, groceries});
+    res.status(200).json({ page, limit, groceries });
   } catch (err: unknown) {
     res.status(500).json({ msg: "error while getting groceries", error: err });
   }
-}
+};
 
 export const updateGrocery: HandlerFunction = async (req, res) => {
-    const { id } = req.params;
-    const { name, price, inventory } = req.body;
-    const values = [name, price, inventory, id];
-  
-    try {
-      const grocery = await updateGrocerySvc(Number(id), name, price, inventory);
-      logger.info("Grocery updated successfully");
-      res.status(200).json(grocery);
-    } catch (err: unknown) {
-      res.status(500).json({ error: err });
-    }
+  const { id } = req.params;
+  const { name, price, inventory } = req.body;
+  const values = [name, price, inventory, id];
+
+  try {
+    const grocery = await updateGrocerySvc(Number(id), name, price, inventory);
+    logger.info("Grocery updated successfully");
+    res.status(200).json(grocery);
+  } catch (err: unknown) {
+    res.status(500).json({ error: err });
   }
+};
+
+export const deleteGrocery: HandlerFunction = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const grocery = await deleteGrocerySvc(Number(id));
+    logger.info("Grocery deleted successfully");
+    res.status(200).json({ msg: "Grocery deleted successfully", ...grocery });
+  } catch (err: any) {
+    res.status(500).json({ msg: "error while deleting grocery", error: err.toString() });
+  }
+};

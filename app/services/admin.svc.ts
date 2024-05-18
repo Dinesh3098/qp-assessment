@@ -1,5 +1,6 @@
 import {
   add_new_grocery,
+  delete_grocery,
   get_groceries,
   update_grocery,
 } from "../constants/queries/admin.query";
@@ -24,7 +25,7 @@ export const addGrocerySvc: (
     const grocery: Grocery = rows[0];
     return grocery;
   } catch (err: unknown) {
-    logger.error("Unable to insert grocery in database", err, values);
+    logger.error("Unable to insert grocery in database: ", err, values);
     throw err;
   }
 };
@@ -42,7 +43,7 @@ export const getGroceriesSvc: (
     const groceries: Grocery[] = rows;
     return groceries;
   } catch (err: unknown) {
-    logger.error("Unable to get groceries from database", err);
+    logger.error("Unable to get groceries from database: ", err);
     throw err;
   }
 };
@@ -66,7 +67,28 @@ export const updateGrocerySvc: (
     const grocery: Grocery = rows[0];
     return grocery;
   } catch (err: unknown) {
-    logger.error("Unable to update grocery in database", err, values);
+    logger.error("Unable to update grocery in database: ", err, values);
     throw err;
   }
-}
+};
+
+export const deleteGrocerySvc: (id: number) => Promise<Grocery> = async (
+  id: number
+) => {
+  const values = [id];
+
+  try {
+    const pool = await getDatabasePool();
+    const { rows } = await pool.query(delete_grocery, values);
+    if (rows.length === 0) {
+    //   logger.error("Grocery item not found", id);
+      throw new Error("Grocery item not found");
+    } else {
+      const grocery: Grocery = rows[0];
+      return grocery;
+    }
+  } catch (err: unknown) {
+    logger.error("Unable to delete grocery from database: ", err, { id });
+    throw err;
+  }
+};

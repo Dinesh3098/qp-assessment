@@ -11,3 +11,8 @@ export const update_grocery = `
   WHERE id = $4
   RETURNING *;
 `;
+
+export const delete_grocery = `
+DELETE FROM groceries 
+WHERE id = $1 
+RETURNING *;`;

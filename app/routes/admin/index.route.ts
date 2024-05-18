@@ -1,6 +1,7 @@
 import express, { Router } from "express";
 import {
   addGrocery,
+  deleteGrocery,
   getGroceries,
   updateGrocery,
 } from "../../handlers/admin.handler";
@@ -11,7 +12,7 @@ const adminRoutes: RouterFunction = (): Router => {
   router.post("/grocery", addGrocery);
   router.get("/groceries", getGroceries);
   router.put("/grocery/:id", updateGrocery);
-  //   router.delete("/grocery/:id", );
+    router.delete("/grocery/:id", deleteGrocery);
   return router;
 };
 
