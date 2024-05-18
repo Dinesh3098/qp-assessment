@@ -3,6 +3,7 @@ import dotenv from "dotenv";
 import { logRequest, logger } from "../app/utils/logger.util";
 import createTablesMigration from "../app/migrations/001-initial-schema";
 import { routes } from "../app/routes/index.route";
+import { insertSampleData } from "../app/migrations/002-insert-sample-data";
 
 dotenv.config();
 
@@ -12,6 +13,7 @@ const app: Express = express();
 {
   (async () => {
     await createTablesMigration();
+    await insertSampleData();
   })();
 }
 

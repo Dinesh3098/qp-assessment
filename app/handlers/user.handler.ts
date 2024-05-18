@@ -36,14 +36,15 @@ export const getGroceries: HandlerFunction = async (
 };
 
 export const placeOrder: HandlerFunction = async (req, res) => {
-  const { user_id, items } = req.body;
+  const { items } = req.body;
+  const user_id = req?.user?.id;
 
   if (!user_id || !items) {
     logger.error("All fields are required");
     return res.status(400).json({ error: "All fields are required" });
   }
   try {
-    const order_id = await placeOrderSvc(user_id, items);
+    const order_id = await placeOrderSvc(user_id.toString(), items);
 
     res.status(201).json({ msg: "Order placed successfully", order_id });
   } catch (error: any) {

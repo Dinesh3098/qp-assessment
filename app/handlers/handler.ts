@@ -1,2 +1,7 @@
 import { Request, Response } from "express";
-export type HandlerFunction  = (req: Request, res: Response) => void;
+import { User } from "../models/user.model";
+
+export interface CustomRequest extends Request {
+  user?: User;
+}
+export type HandlerFunction = (req: CustomRequest, res: Response) => void;

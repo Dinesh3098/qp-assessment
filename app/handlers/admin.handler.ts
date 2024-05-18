@@ -1,4 +1,3 @@
-import { Request, Response } from "express";
 import { HandlerFunction } from "./handler";
 import {
   addGrocerySvc,
@@ -8,10 +7,7 @@ import {
 } from "../services/admin.svc";
 import { logger } from "../utils/logger.util";
 
-export const addGrocery: HandlerFunction = async (
-  req: Request,
-  res: Response
-) => {
+export const addGrocery: HandlerFunction = async (req, res) => {
   const { name, price, inventory } = req.body;
 
   if (!name || !price || !inventory) {
@@ -27,10 +23,7 @@ export const addGrocery: HandlerFunction = async (
   }
 };
 
-export const getGroceries: HandlerFunction = async (
-  req: Request,
-  res: Response
-) => {
+export const getGroceries: HandlerFunction = async (req, res) => {
   let page = parseInt(req.query.page as string) || 1;
   let limit = parseInt(req.query.limit as string) || 5;
 
@@ -65,6 +58,8 @@ export const deleteGrocery: HandlerFunction = async (req, res) => {
     logger.info("Grocery deleted successfully");
     res.status(200).json({ msg: "Grocery deleted successfully", ...grocery });
   } catch (err: any) {
-    res.status(500).json({ msg: "error while deleting grocery", error: err.toString() });
+    res
+      .status(500)
+      .json({ msg: "error while deleting grocery", error: err.toString() });
   }
 };

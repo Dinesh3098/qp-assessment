@@ -3,7 +3,7 @@ import { getDatabasePool } from "../database/postgres.db";
 import { Pool } from "pg";
 import { create_tables } from "../constants/queries/migration.query";
 
-const createTablesMigration: () => void = async () => {
+const createTablesMigration: () => Promise<void> = async () => {
   let client: Pool;
   try {
     client = await getDatabasePool();

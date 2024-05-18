@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { HandlerFunction } from "./handler";
 
 
-const pongHandler:HandlerFunction = (req: Request, res: Response) => {
+const pongHandler:HandlerFunction = (req, res) => {
   res.json({ message: "pong" });
 };
 

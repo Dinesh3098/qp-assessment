@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { url } from "inspector";
 import { createLogger, transports, format, Logger } from "winston";
+import { MiddlewareFunction } from "../middlewares/middleware";
 
 const logger: Logger = createLogger({
   level: "info",
@@ -23,7 +24,7 @@ const logger: Logger = createLogger({
   ],
 });
 
-const logRequest = (req: Request, res: Response, next: NextFunction) => {
+const logRequest: MiddlewareFunction = (req, res, next) => {
   const requestDetails = {
     method: req.method,
     url: req.headers.host,
