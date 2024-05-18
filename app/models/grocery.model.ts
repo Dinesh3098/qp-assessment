@@ -4,3 +4,8 @@ export interface Grocery {
   price: number;
   inventory: number;
 }
+
+export interface GroceryItems {
+  grocery_id: number;
+  quantity: number;
+}
