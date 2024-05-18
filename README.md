@@ -12,3 +12,9 @@
 3. Build the project: `npm run build`.
 4. Start the application: `npm start`.
 5. Run the Development: `npm run dev`.
+
+
+### Docker
+
+To run application in docker
+ - ```docker-compose up --build```
