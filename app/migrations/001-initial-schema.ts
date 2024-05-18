@@ -1,7 +1,7 @@
 import { logger } from "../utils/logger.util";
 import { getDatabasePool } from "../database/postgres.db";
 import { Pool } from "pg";
-import { create_tables } from "../constants/queries/migrations";
+import { create_tables } from "../constants/queries/migration.query";
 
 const createTablesMigration: () => void = async () => {
   let client: Pool;
