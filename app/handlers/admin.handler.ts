@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import { HandlerFunction } from "./handler";
-import { addGrocerySvc, getGroceriesSvc } from "../services/admin.svc";
+import { addGrocerySvc, getGroceriesSvc, updateGrocerySvc } from "../services/admin.svc";
 import { logger } from "../utils/logger.util";
 
 export const addGrocery: HandlerFunction = async (
@@ -17,7 +17,7 @@ export const addGrocery: HandlerFunction = async (
     let grocery = await addGrocerySvc(name, price, inventory);
     logger.info("Grocery added successfully");
     res.status(201).json(grocery);
-  } catch (err: any) {
+  } catch (err: unknown) {
     res.status(500).json({ msg: "error while adding grocery", error: err });
   }
 };
@@ -38,7 +38,21 @@ export const getGroceries: HandlerFunction = async (
     const groceries = await getGroceriesSvc(Number(page),  Number(limit));
     logger.info("Groceries fetched successfully");
     res.status(200).json({page, limit, groceries});
-  } catch (err: any) {
+  } catch (err: unknown) {
     res.status(500).json({ msg: "error while getting groceries", error: err });
   }
 }
+
+export const updateGrocery: HandlerFunction = async (req, res) => {
+    const { id } = req.params;
+    const { name, price, inventory } = req.body;
+    const values = [name, price, inventory, id];
+  
+    try {
+      const grocery = await updateGrocerySvc(Number(id), name, price, inventory);
+      logger.info("Grocery updated successfully");
+      res.status(200).json(grocery);
+    } catch (err: unknown) {
+      res.status(500).json({ error: err });
+    }
+  }

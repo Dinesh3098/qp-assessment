@@ -1,6 +1,7 @@
 import {
   add_new_grocery,
   get_groceries,
+  update_grocery,
 } from "../constants/queries/admin.query";
 import { getDatabasePool } from "../database/postgres.db";
 import { Grocery } from "../models/grocery.model";
@@ -45,3 +46,27 @@ export const getGroceriesSvc: (
     throw err;
   }
 };
+
+export const updateGrocerySvc: (
+  id: number,
+  name: string,
+  price: number,
+  inventory: number
+) => Promise<Grocery> = async (
+  id: number,
+  name: string,
+  price: number,
+  inventory: number
+) => {
+  const values = [name, price, inventory, id];
+
+  try {
+    const pool = await getDatabasePool();
+    const { rows } = await pool.query(update_grocery, values);
+    const grocery: Grocery = rows[0];
+    return grocery;
+  } catch (err: unknown) {
+    logger.error("Unable to update grocery in database", err, values);
+    throw err;
+  }
+}
