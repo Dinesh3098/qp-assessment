@@ -31,16 +31,11 @@ export const getGroceries: HandlerFunction = async (
   req: Request,
   res: Response
 ) => {
-  let { page, limit } = req.query;
-  if (!page) {
-    page = "1";
-  }
-  if (!limit) {
-    limit = "5";
-  }
+  let page = parseInt(req.query.page as string) || 1;
+  let limit = parseInt(req.query.limit as string) || 5;
 
   try {
-    const groceries = await getGroceriesSvc(Number(page), Number(limit));
+    const groceries = await getGroceriesSvc(page, limit);
     logger.info("Groceries fetched successfully");
     res.status(200).json({ page, limit, groceries });
   } catch (err: unknown) {
