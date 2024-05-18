@@ -1,17 +1,25 @@
-import express, { Express, Request, Response } from "express";
+import express, { Express } from "express";
 import dotenv from "dotenv";
-import router from "../app/routes/index.route";
 import { logRequest, logger } from "../app/utils/logger.util";
+import createTablesMigration from "../app/migrations/001-initial-schema";
+import { routes } from "../app/routes/index.route";
 
 dotenv.config();
 
 const app: Express = express();
-const port: string = process.env.APP_PORT || "3000";
+
+// run migrations
+{
+  (async () => {
+    await createTablesMigration();
+  })();
+}
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use("/", logRequest, router);
+app.use(logRequest, routes());
 
+const port: string = process.env.APP_PORT || "3000";
 app.listen(port, () => {
   logger.info(`Server is running on port %s`, port);
 });

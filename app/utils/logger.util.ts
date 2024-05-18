@@ -15,7 +15,9 @@ const logger: Logger = createLogger({
     new transports.Console({
       format: format.printf((logData) => {
         const { timestamp, level, message, ...metadata } = logData;
-        return JSON.stringify({ level, timestamp, ...metadata, message });
+        if (Object.keys(metadata.metadata).length>0)
+          return JSON.stringify({ level, timestamp, ...metadata, message });
+        else return JSON.stringify({ level, timestamp, message });
       }),
     }),
   ],
@@ -26,6 +28,7 @@ const logRequest = (req: Request, res: Response, next: NextFunction) => {
     method: req.method,
     url: req.headers.host,
     path: req.path,
+    body: req?.body,
   };
 
   logger.info("request logged", { Request: requestDetails });

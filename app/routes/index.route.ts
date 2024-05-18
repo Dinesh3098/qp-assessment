@@ -1,8 +1,14 @@
-import express, { Router } from "express";
-import pongHandler from "../handlers/pong";
+import express, { Express, Router } from "express";
+import pongHandler from "../handlers/pong.handler";
+import adminRoutes from "./admin/index.route";
 
-const router: Router = express.Router();
+export type RouterFunction = () => Router;
 
-router.get("/ping", pongHandler);
+export const routes: RouterFunction = (): Router => {
+  const router: Router = express.Router();
 
-export default router;
+  router.get("/ping", pongHandler);
+  router.use("/admin", adminRoutes());
+
+  return router;
+};
